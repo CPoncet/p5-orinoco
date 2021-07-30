@@ -15,3 +15,45 @@
     transform: rotate(360deg);
   }
 }
+
+#notif {
+  animation: fadeOut 0.2s forwards;
+  animation-delay: 3s;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1em;
+}
+
+#order-form div {
+  margin-bottom: 1em;
+}
+
+#order-form input {
+  padding: 0.5em 0.3em 0.5em 0.3em;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-right: 1em;
+}

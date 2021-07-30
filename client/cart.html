@@ -1,33 +1,42 @@
 <html>
-    <head>
-        <title>Orinoco</title>
-        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="js/main.js"></script>
-        <script src="js/cart.js"></script>
-    </head>
+  <head>
+    <title>Orinoco</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+  </head>
 
-    <body>
+  <body>
+    <header class="container flex mx-auto bg-red-500 p-4">
+      <div class="w-1/2">Logo</div>
 
-        <header class="container mx-auto bg-red-500 p-4">
-            Orinoco
+      <nav class="flex-1 flex justify-end">
+        <ul class="flex gap-4 text-white font-bold">
+          <li><a href="index.html">Products</a></li>
+          <li><a id="cart" href="cart.html"></a></li>
+        </ul>
+      </nav>
+    </header>
 
-            <nav>
-                <ul>
-                    <li><a href="index.html">Products</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <main>
-
-            <section id="products" class="container mx-auto flex flex-wrap py-4 flex-col">
-                
-            </section>
-
-        </main>
-
-    </body>
-
+    <main>
+      <section
+        id="products"
+        class="container mx-auto flex flex-wrap py-4 flex-col"
+      >
+        <div class="flex gap-4 font-bold pl-4 bg-blue-300">
+          <div class="flex-1 flex items-center justify-center">
+            Product name
+          </div>
+          <div class="flex-1 flex items-center justify-center">Lense type</div>
+          <div class="flex-1 flex items-center justify-center">Price</div>
+          <div class="flex-1 flex items-center justify-center">Quantity</div>
+          <div class="flex-1 flex items-center justify-center">Subtotal</div>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
