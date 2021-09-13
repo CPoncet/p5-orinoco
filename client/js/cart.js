@@ -1,15 +1,41 @@
+
+function getFullPrice(cart) {
+  let fullPrice = 0;
+
+  for (var i = 0; i < cart.items.length; i++) {
+    const item = cart.items[i];
+
+    let tempPrice = 0;
+
+    if (item.quantity) {
+      tempPrice = item.price * item.quantity;
+    } else {
+      tempPrice = item.price * 1;
+    }
+
+    fullPrice += tempPrice;
+  }
+  return fullPrice;
+}
+
+function emptyCart() {
+  const storage = window.localStorage;
+  storage.clear();
+  window.location.reload();
+}
+
 function alterQuantity(item, more) {
   const storage = window.localStorage;
   const cart = JSON.parse(storage.getItem("cart"));
 
   if ((!item.quantity || item.quantity === 1) && !more) {
     cart.items.splice(
-      cart.items.findIndex((x) => x.name === item.name),
+      cart.items.findIndex((x) => x.name === item.name && x.lenses[0] === item.lenses[0]),
       1
     );
   } else {
     cart.items.map((x) =>
-      x.name === item.name
+      x.name === item.name && x.lenses[0] === item.lenses[0]
         ? more
           ? x.quantity
             ? x.quantity++
@@ -24,7 +50,8 @@ function alterQuantity(item, more) {
   window.location.reload();
 }
 
-async function order() {
+async function order(e) {
+  e.preventDefault();
   const storage = window.localStorage;
   const cart = JSON.parse(storage.getItem("cart"));
 
@@ -56,9 +83,11 @@ async function order() {
     });
     const json = await res.json();
     if (json.orderId) {
-      alert(`Voici le numéro de commande: ${json.orderId}`);
+      const fullPrice = getFullPrice(cart);
+      storage.clear();
+      window.location.replace(`confirmation.html?orderid=${json.orderId}&price=${fullPrice}`)
     } else {
-      alert("An error occured");
+      alert("Correct the fields");
     }
   } catch (e) {
     console.log(e);
@@ -77,21 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  let fullPrice = 0;
-
-  for (var i = 0; i < cart.items.length; i++) {
-    const item = cart.items[i];
-
-    let tempPrice = 0;
-
-    if (item.quantity) {
-      tempPrice = item.price * item.quantity;
-    } else {
-      tempPrice = item.price * 1;
-    }
-
-    fullPrice += tempPrice;
-  }
+  let fullPrice = getFullPrice(cart);
 
   cart.items.forEach((item, index) => {
     const el = `
@@ -117,7 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     )}, true)'>+</button>
             </div>
             <div class="flex-1 flex items-center justify-center">
-                ${item.quantity ? item.price * item.quantity : item.price} €
+                ${item.quantity ? (item.price * item.quantity) * 0.01 : item.price * 0.01} €
             </div>
         </div>
         `;
@@ -128,25 +143,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   products.insertAdjacentHTML(
     "beforeend",
     `
-    <div class="flex w-full justify-end p-8">
-        Total:&nbsp;<strong>${fullPrice} €</strong>
+    <div class="flex p-8">
+      <div class="flex-1">
+        <button class="border rounded bg-red-500 text-white py-2 px-4" onClick="emptyCart()">Empty cart</button>
+      </div>
+      <div class="flex flex-1 justify-end">
+        Total:&nbsp;<strong>${fullPrice * 0.01} €</strong>
+      </div>
     </div>
     <div>
         <h2>Place order</h2>
-        <form onsubmit='return false' id="order-form">
+        <form onsubmit='order(event)' id="order-form">
             <div>
-                <label>First name: <input type="text" name="firstName" required /></label>
-                <label>Last name: <input type="text" name="lastName" required /></label>
+                <label>First name: <input type="text" pattern="[a-zA-Z0-9]+" name="firstName" title="You can only use alphanumeric characters" required /></label>
+                <label>Last name: <input type="text" pattern="[a-zA-Z0-9]+" name="lastName" title="You can only use alphanumeric characters" required /></label>
             </div>
             <div>
-                <label>Address: <input type="text" name="address" required /></label>
-                <label>City: <input type="text" name="city" required /></label>
+                <label>Address: <input type="text" pattern="[a-zA-Z0-9]+" name="address" title="You can only use alphanumeric characters" required /></label>
+                <label>City: <input type="text" name="city" pattern="[a-zA-Z0-9]+" title="You can only use alphanumeric characters" required /></label>
             </div>
             <div>
                 <label>Email: <input type="email" name="email" required /></label>
             </div>
             <div>
-                <button class="border rounded bg-red-500 text-white py-2 px-4" onClick='order()'>Order</button>
+                <button type="submit" class="border rounded bg-red-500 text-white py-2 px-4">Order</button>
             </div>
         </form>   
     </div>`

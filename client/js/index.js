@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }" /></figure><div class="p-4">
     <h3 class="mb-4 ">${item.name}</h3>
     <div class="flex">
-    <span>${item.price} €</span>
+    <span>${item.price * 0.01} €</span>
     <div class="flex-1 flex justify-end">
     <a class="px-4 py-2 bg-red-500 rounded-lg text-white" href="product.html?id=${
       item._id

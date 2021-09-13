@@ -38,8 +38,6 @@ async function addToCart(item, lense) {
   notify("Added to cart!", "green");
 
   storage.setItem("cart", JSON.stringify(cartObj));
-
-  window.location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
